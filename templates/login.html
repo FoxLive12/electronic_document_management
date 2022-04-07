@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Авторизация</title>
+{% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="../static/css/login.css">
+{% endblock %}
+
+{% block sidenav %}
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2 class="auth">Авторизация</h3>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash">{{ message }}</div>
+                    {% endfor %}
+            {% endif %}
+        {% endwith %}
+    <form class="form-login" method="post">
+        <div>
+            <input type="email" placeholder="E-mail" class="login-input" name="email">
+        </div>
+        <div>
+            <input type="password" placeholder="Password" class="login-input" name="password">
+        </div>
+        <div class="checkbox">
+            <p>Запомнить: </p>
+            <input type="checkbox" class="input-check" name="remember">
+        </div>
+
+        <input type="submit" value="Войти" class="submit">
+        <div class="registration">
+           <a href="/forgot">Забыли пароль</a> / <a href="/login/registration">Зарегистрироваться</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

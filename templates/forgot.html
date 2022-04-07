@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block link %}
+<link rel="stylesheet" href="../static/css/login.css">
+{% endblock %}
+
+{% block sidenav %}
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2 class="auth">Восстановить пароль</h3>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form class="form-login" method="post">
+        <div>
+            <input type="email" placeholder="E-mail" class="login-input" name="email">
+        </div>
+        <input type="submit" value="Подтвердить" class="submit">
+    </form>
+</div>
+{% endblock %}

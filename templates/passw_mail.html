@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="../static/css/mail.css">
+    <title>Восстановление пароля</title>
+    <style>
+        * {
+        font-family: 'Montserrat', sans-serif;
+        font-style: normal;
+    }
+    
+    .psw-recovery {
+        display: inline-block;
+        background: #32c9ae;
+        color: #fff;
+        padding: 1rem 1.5rem;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .psw-recovery:hover {
+        background: #39e4c4;
+    }
+    .text a{
+        color: #000;
+    }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h2>Восстановление пароля</h2>
+        <div class="text">Уважаемый <b>{{name}}</b>. Вы сделали запрос на получение забытого пароля на сайте <a href="http://localhost:5000">http://localhost:5000</a>. Чтобы получить новый пароль, пройдите по ссылке ниже:</div> 
+        <a href="http://localhost:5000/password/recovery?email={{email[0]}}" class="psw-recovery">Восстановить пароль</a>
+        <div class="text">Если вы не делали запроса для получения пароля, то просто удалите данное письмо. Ваш пароль храниться в надежном месте и недоступен посторонним лицам.</div>
+    </div>
+</body>
+</html>

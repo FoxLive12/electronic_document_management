@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Регистрация</title>
+{% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="../static/css/login.css">
+{% endblock %}
+
+{% block sidenav %}
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h2 class="auth">Регистрация</h3>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form class="form-login" method="post" >
+        <div>
+            <input type="text" placeholder="Фамилия" class="login-input" name="surname">
+        </div>
+        <div>
+            <input type="text" placeholder="Имя" class="login-input" name="name">
+        </div>
+        <div>
+            <input type="text" placeholder="Отчество" class="login-input" name="patronymic">
+        </div>
+        <div>
+            <input type="email" placeholder="E-mail" class="login-input" name="email">
+        </div>
+        <div>
+            <select name="user_type" class="user_type">
+                {% for item in type %}
+                    <option value="{{item.title}}">{{item.title}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="password">
+            <input type="password" placeholder="Введите пароль" name="password" class="passw-input" id="passw-input">
+            <img src="../static/image/icons/ic-view-pass.svg" class="ic-view-pass" id="ic-view-pass">
+        </div>
+        <div class="password">
+            <input type="password" placeholder="Повторите пароль" name="re-password" class="passw-input" id="re-passw-input">
+            <img src="../static/image/icons/ic-view-pass.svg" class="ic-view-pass" id="ic-view-re-pass">
+        </div>
+        <input type="submit" value="Зарегистрироваться" class="submit">
+        <div class="registration">
+            <a href="/login">Авторизоваться</a>
+         </div>
+    </form>
+</div>
+{% endblock %}

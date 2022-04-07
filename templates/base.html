@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}
+        <title>Главная страница</title>
+    {% endblock %}
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/main_page.css">
+    <link rel="icon" type="image/x-icon" href="../static/image/icons/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;500;700&family=Poppins:wght@100;300;500;700&display=swap" rel="stylesheet">
+    {% block link %}
+    {% endblock %}
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="nav-container">
+            <div class="nav">
+                <div class="nav-content">
+                    <a href="/"><img src="../static/image/logo.svg" class="logo"></a>
+                    {% if user.id %}
+                        <form class="search" method="POST">
+                            <input type="text" class="search-query" placeholder="Поиск по всем документам">
+                            <img src="../static/image/icons/ic_search_magnifier.svg" class="ic-search">
+                        </form>
+                    {% endif %}
+                    <ul class="menu">
+                        {% if user.id %}
+                        <li class="profile" id="profile">
+                            <a href="/profile">{{current_user.surname + " " + current_user.name[0] + ". " + current_user.patronymic[0] + "."}}</a>
+                        </li>
+                        {% endif %}
+                        {% if user.id %}
+                        <li class="profile" id="profile">
+                            <a href="/logout">Выйти</a>
+                        </li>
+                        {% else %}
+                        <li class="profile" id="profile">
+                            <a href="/login">Войти</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        {% block sidenav %}
+        <div id="side-navigation" class="side-navigation">
+            <div id="sidenav" class="sidenav">
+                <div class="create-bttn">
+                    <a href="/add-document" class="create-project">Создать документ</a>
+                </div>
+                <div class="side-menu">
+                    <a href="#">
+                        <hr class="separator">
+                        <div class="side-menu-item">
+                            <div class="side-menu-link">
+                                <p>Мои документы</p>
+                            </div>
+                        </div>
+                        <hr class="separator">
+                        <div class="side-menu-item">
+                            <div class="side-menu-link">
+                                <p>Входящие</p>
+                            </div>
+                        </div>
+                        <hr class="separator">
+                        <div class="side-menu-item">
+                            <div class="side-menu-link">
+                                <p>Исходящие</p>
+                            </div>
+                        </div>
+                        <hr class="separator">
+                        <div class="side-menu-item">
+                            <div class="side-menu-link">
+                                <p>Избранные</p>
+                            </div>
+                        </div>
+                        <hr class="separator">
+                        <div class="side-menu-item">
+                            <div class="side-menu-link">
+                                <p>Черновики</p>
+                            </div>
+                        </div>
+                        <hr class="separator">
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+        {% block content %}
+            <div class="content">
+                asddsf            
+            </div>
+        {% endblock %}
+    </div>
+<script type="text/javascript" src="../static/js/main.js"></script>
+</body>
+</html>

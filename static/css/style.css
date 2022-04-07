@@ -1,0 +1,168 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+}
+
+body{
+    background-color: #f0f0f0;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+ul, li{
+    display: block;
+}
+
+.nav-container {
+    display: flex;
+}
+
+.nav{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+.nav-content{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    margin-left: 83px;
+    width: 160px;
+    height: 80px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    margin-left: 300px;
+    border: 2px solid #d6d6d6;
+    border-radius: 4px;
+}
+
+.search-query {
+    width: 400px;
+    height: 35px;
+    border: 0;
+    padding: 0px 7px 0px 7px;
+}
+
+.search-query:focus{
+    outline: none;
+}
+
+.ic-search {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.menu {
+    display: flex;
+    margin-left: auto;
+    margin-right: 50px;
+}
+
+.menu li{
+    margin-left: 70px;
+    list-style-type: none;
+}
+
+.container {
+    display: flex;
+    margin: 10px;
+}
+
+.sidenav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    background-color: #32c9ae;
+}
+
+.create-bttn {
+    padding-top: 30px;
+}
+
+.create-project {
+    display: inline-block;
+    background: #8C959D;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.create-project:hover {
+    background: #9ea8b0;
+}
+
+.side-menu {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.separator {
+    height: 1px;
+    border: none;
+    background-color: #29a38d;
+}
+
+.side-menu-item{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
+}
+
+.side-menu-item:hover {
+    background-color: #36d6b9;
+}
+
+.side-menu-link {
+    color: #fff;
+}
+
+.flash {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    background: #ff0b0b6e;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.user_type {
+    margin-top: 20px;
+    width: 400px;
+    height: 35px;
+    border: 2px solid #969696;
+    
+}
+
+.user_type:focus{
+    outline: 0px;
+}
+
+.submit {
+    margin-top: 25px;
+    width: 400px;
+    height: 35px;
+    cursor: pointer;
+    border: none;
+    background-color: #8C959D;
+}
+
+.submit:hover {
+    background: #9ea8b0;
+}

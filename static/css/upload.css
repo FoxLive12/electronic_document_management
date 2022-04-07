@@ -1,0 +1,26 @@
+.upload-file {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.caption {
+    font-size: 27px;
+}
+
+.drop-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload {
+    color: #219e87;
+    margin-right: 4px;
+}
+
+.ic-doc {
+    width: 130px;
+    height: 130px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Добавление нового документа</title>
+{% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="../static/css/upload.css">
+{{ dropzone.load_js() }}
+{{ dropzone.load_css() }}
+<style>
+    .dropzone {
+    border: 2px dashed #61616198;
+    margin-top: 1%;
+    margin-right: 1%;
+    margin-bottom: 1%;
+    min-height: 400px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="upload-file">
+        <p class="caption">Новый документ</p>
+        <form method="post">
+            <select name="user_type" class="user_type">
+                {% for item in recipient %}
+                    <option value="{{item.id}}">{{ item.surname }} {{ item.name[0] }}. {{ item.patronymic[0] }}.</option>
+                {% endfor %}
+            </select>
+            <input type="submit" class="submit">
+        </form>
+        {{ dropzone.create(action='/add-document') }}
+        {{ dropzone.config(
+            redirect_url=url_for('login'),
+            default_message = '<div>
+                    <img src="../static/image/icons/ic_document.svg" class="ic-doc">
+                    <div class="drop-message">
+                        <p class="upload">Загрузите с компьютера</p> или перетащите файлы для отправки. Максимум 10 документов
+                    </div>
+                </div>'
+        ) }}
+</div>
+{% endblock %}
