@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 from flask_dropzone import Dropzone
 
+ALLOWED_EXTENSIONS = {'pdf', 'docx', 'doc', 'txt'}
 
 app = Flask(__name__)
 app.config.from_object(Configuration)

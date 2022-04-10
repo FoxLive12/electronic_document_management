@@ -12,3 +12,7 @@ def send_email(sender, email, username):
     msg = Message("Electronicworkflows - восстановление пароля", sender=sender,  recipients=email)
     msg.html = render_template('passw_mail.html', name = username, email = email)
     send_async_email(msg)
+
+def allowed_file(filename, ALLOWED_EXTENSIONS):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

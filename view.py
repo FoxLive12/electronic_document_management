@@ -1,10 +1,10 @@
-from app import app, login_manager
+from app import app, login_manager, ALLOWED_EXTENSIONS
 from flask import render_template, request, flash, url_for
 from flask_login import login_user, login_required, current_user, logout_user
 from model import *
-from werkzeug.utils import redirect
+from werkzeug.utils import redirect, secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-from func import send_email
+from func import send_email, allowed_file
 from config import Configuration
 import os
 import datetime
@@ -119,11 +119,29 @@ def profile():
 @login_required
 def add_doc():
     users = Users.query.filter(Users.id != current_user.id).all()
-    file_list = []
     if request.method == 'POST':
-        f = request.files.get('file')
-        #f.save(os.path.join(f'projects/{current_user.email}', f.filename))
-        #message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/{f.filename}', date=str(datetime.datetime.now()), status='Read', sender=current_user.id, recipient='email')
-        #db.session.add(message)
-        #db.session.commit()
+        user = request.form['user_type']
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect('/add-document')
+        f = request.files['file']
+        if f.filename == '':
+            flash('No selected file')
+            return redirect('/add-document')
+        if f and allowed_file(f.filename, ALLOWED_EXTENSIONS):
+            f.save(os.path.join(f'projects/{current_user.email}', f.filename))
+            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/{f.filename}', date=str(datetime.datetime.now()), status='Send', sender=current_user.id, recipient=user)
+            db.session.add(message)
+            db.session.commit()
+            return redirect('/')
+        else:
+            flash('Недопустимое расширение файла')
+            return redirect('/add-document')
     return render_template('add_doc.html', user=current_user, recipient = users)
+
+@app.route('/outgoing')
+@login_required
+def outgoing():
+    msg = Message.query.filter_by(sender = current_user.id).all()
+    print(msg)
+    return render_template('outgoing.html', user=current_user, msg = msg)
