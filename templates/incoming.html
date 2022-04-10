@@ -6,8 +6,22 @@
 
 {% block content %}
 <div class="content">
-    {% for i in msg %}
-        <p>{{ i.file_name }}</p>
-    {% endfor %}
+    <table class="message-table">
+        <tr>
+            <th class="table-title">Отправитель</th>
+            <th class="table-title">Документы</th>
+            <th class="table-title">Статус</th>
+            <th class="table-title">Дата</th>
+        </tr>
+        {% for i in msg %}
+            <tr>
+                <th class="item-message">{{ i.sender }}</th>
+                <th class="item-message">{{ i.file_name }}</th>
+                <th class="item-message">{{ i.status }}</th>
+                <th class="item-message">{{ i.date }}</th>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
 </div>
 {% endblock %}
