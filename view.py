@@ -4,7 +4,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from model import *
 from werkzeug.utils import redirect, secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
-from func import send_email, allowed_file
+from func import send_email, allowed_file, rename_file
 from config import Configuration
 import os
 import datetime
@@ -129,7 +129,7 @@ def add_doc():
             flash('No selected file')
             return redirect('/add-document')
         if f and allowed_file(f.filename, ALLOWED_EXTENSIONS):
-            f.save(os.path.join(f'projects/{current_user.email}', f.filename))
+            f.save(os.path.join(f'projects/{current_user.email}/', secure_filename(str(rename_file(f.filename, datetime.datetime.now())))))
             message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/{f.filename}', date=str(datetime.datetime.now()), status='Send', sender=current_user.id, recipient=user)
             db.session.add(message)
             db.session.commit()
@@ -143,5 +143,10 @@ def add_doc():
 @login_required
 def outgoing():
     msg = Message.query.filter_by(sender = current_user.id).all()
-    print(msg)
     return render_template('outgoing.html', user=current_user, msg = msg)
+
+@app.route('/incoming')
+@login_required
+def ingoing():
+    msg = Message.query.filter_by(recipient = current_user.id).all()
+    return render_template('incoming.html', user=current_user, msg = msg)

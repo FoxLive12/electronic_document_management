@@ -16,3 +16,6 @@ def send_email(sender, email, username):
 def allowed_file(filename, ALLOWED_EXTENSIONS):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def rename_file(filename, date):
+    return filename.rsplit('.', 1)[0] + str(date) + "." + filename.rsplit('.', 1)[1]
