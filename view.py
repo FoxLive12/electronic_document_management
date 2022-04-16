@@ -149,4 +149,15 @@ def outgoing():
 @login_required
 def ingoing():
     msg = Message.query.filter_by(recipient = current_user.id).all()
-    return render_template('incoming.html', user=current_user, msg = msg)
+    sender_list = []
+    for i in msg:
+        user = Users.query.filter_by(id=i.sender).first()
+        sender_list.append(user.surname + " " + user.name[0] + ". " + user.patronymic[0] + ".")
+    return render_template('incoming.html', user=current_user, msg = msg, sender = zip(sender_list, msg))
+
+@app.route('/message')
+@login_required
+def message():
+    id = request.args['name']
+    msg = Message.query.filter_by(id = id).first()
+    return render_template('message.html', user=current_user, msg=msg)

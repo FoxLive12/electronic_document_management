@@ -1,25 +1,32 @@
 .content {
     width: 100%;
     margin-left: 10px;
-    padding-top: 20px;
     background-color: #fff;
+    padding: 15px;
 }
 
-.message-table {
+.incoming-body {
+    display: flex;
     width: 100%;
-    margin-left: 50px;
-    text-align: center;
+}
+
+.column {
+    width: 100%;
 }
 
 .table-title {
-    text-align: left;
-    font-weight: 400;
-    font-size: 14px;
-    color: rgb(112, 112, 112);
+    font-size: 13px;
+    height: 30px;
+    color: rgb(145, 145, 145);
 }
 
-.item-message {
-    text-align: left;
-    padding-top: 20px;
-    font-weight: 400;
+.message-body {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+.separator-msg{
+    height: 1px;
+    border: none;
+    background-color: rgb(116, 116, 116);
 }

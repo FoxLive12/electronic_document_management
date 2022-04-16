@@ -6,21 +6,63 @@
 
 {% block content %}
 <div class="content">
-    <table class="message-table">
-        <tr>
-            <th class="table-title">Отправитель</th>
-            <th class="table-title">Документы</th>
-            <th class="table-title">Статус</th>
-            <th class="table-title">Дата</th>
-        </tr>
-        {% for i in msg %}
-            <tr>
-                <th class="item-message">{{ i.sender }}</th>
-                <th class="item-message">{{ i.file_name }}</th>
-                <th class="item-message">{{ i.status }}</th>
-                <th class="item-message">{{ i.date }}</th>
-            </tr>
-        {% endfor %}
-    </table>
+    <div class="incoming-body">
+        <div class="column">
+            <p class="table-title">Отправитель</p>
+            <hr class="separator-msg">
+            <div class="item">
+                {% for j in msg %}
+                    <a href="/message?name={{j.id}}">
+                        <div class="message-body">
+                            <p class="item-message">{{ user.surname + " " + user.name[0] + ". " + user.patronymic[0] + "." }} (Вы)</p>
+                        </div>
+                    </a>
+                    <hr class="separator-msg">
+                {% endfor %}
+            </div></a>
+        </div>
+        <div class="column">
+            <p class="table-title">Документы</p>
+            <hr class="separator-msg">
+            <div class="item">
+                {% for i in msg %}
+                    <a href="/message?name={{i.id}}">
+                        <div class="message-body">
+                            <p class="item-message">{{ i.file_name }}</p>
+                        </div>
+                    </a>
+                    <hr class="separator-msg">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="column">
+            <p class="table-title">Статус</p>
+            <hr class="separator-msg">
+            <div class="item">
+                {% for i in msg %}
+                    <a href="/message?name={{i.id}}">
+                        <div class="message-body">
+                            <p class="item-message">{{ i.status }}</p>
+                        </div>
+                    </a>
+                    <hr class="separator-msg">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="column">
+            <p class="table-title">Дата</p>
+            <hr class="separator-msg">
+            <div class="item">
+                {% for i in msg %}
+                    <a href="/message?name={{i.id}}">
+                        <div class="message-body">
+                            <p class="item-message">{{ i.date }}</p>
+                        </div>
+                    </a>
+                    <hr class="separator-msg">
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
