@@ -4,8 +4,14 @@
 <title>{{msg.file_name}}</title>
 {% endblock %}
 
+{% block link %}
+<link rel="stylesheet" href="../static/css/message.css">
+{% endblock %}
+
 {% block content %}
 <div class="content">
-    
+    <div class="doc-view">
+        <iframe src="../static/{{msg.file_url}}" frameborder="0" width="900px" height="800px"></iframe>
+    </div>
 </div>
 {% endblock %}

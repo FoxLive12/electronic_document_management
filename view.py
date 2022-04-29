@@ -1,5 +1,5 @@
 from app import app, login_manager, ALLOWED_EXTENSIONS
-from flask import render_template, request, flash, url_for
+from flask import render_template, request, flash
 from flask_login import login_user, login_required, current_user, logout_user
 from model import *
 from werkzeug.utils import redirect, secure_filename
@@ -129,8 +129,9 @@ def add_doc():
             flash('No selected file')
             return redirect('/add-document')
         if f and allowed_file(f.filename, ALLOWED_EXTENSIONS):
-            f.save(os.path.join(f'projects/{current_user.email}/', secure_filename(str(rename_file(f.filename, datetime.datetime.now())))))
-            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/{f.filename}', date=str(datetime.datetime.now()), status='Send', sender=current_user.id, recipient=user)
+            f_name = secure_filename(str(rename_file(f.filename, datetime.datetime.now())))
+            f.save(os.path.join(f'static/projects/{current_user.email}/', f_name))
+            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/' + f_name, date=str(datetime.datetime.now()), status='Send', sender=current_user.id, recipient=user)
             db.session.add(message)
             db.session.commit()
             return redirect('/')
@@ -143,7 +144,7 @@ def add_doc():
 @login_required
 def outgoing():
     msg = Message.query.filter_by(sender = current_user.id).all()
-    return render_template('outgoing.html', user=current_user, msg = msg)
+    return render_template('outgoing.html', user=current_user, msg = list(reversed(msg)))
 
 @app.route('/incoming')
 @login_required
@@ -153,7 +154,7 @@ def ingoing():
     for i in msg:
         user = Users.query.filter_by(id=i.sender).first()
         sender_list.append(user.surname + " " + user.name[0] + ". " + user.patronymic[0] + ".")
-    return render_template('incoming.html', user=current_user, msg = msg, sender = zip(sender_list, msg))
+    return render_template('incoming.html', user=current_user, msg = list(reversed(msg)), sender = zip(list(reversed(sender_list)), list(reversed(msg))))
 
 @app.route('/message')
 @login_required
