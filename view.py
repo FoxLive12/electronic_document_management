@@ -62,7 +62,7 @@ def registation():
                     user = Users(surname=surname, name=name, patronymic=patronymic, email=email, passw=generate_password_hash(passw), type_user=user_role_id)
                     db.session.add(user)
                     db.session.commit()
-                    os.mkdir(f'projects/{email}')
+                    os.mkdir(f'static/projects/{email}')
                     return redirect('/login')
                 else:
                     flash('Пароли не совпадают')
