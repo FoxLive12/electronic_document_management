@@ -1,4 +1,31 @@
+.action-bttn {
+    width: 150px;
+    display: inline-block;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+
+.action-bttn:hover {
+    opacity: .8;
+}
+
+.approve {
+    background-color: rgb(15, 83, 15);
+}
+
+.reject {
+    background-color: rgb(179, 14, 14);
+}
+
+.delegate {
+    background-color: #8C959D;
+}
 
 .doc-view {
+    margin-top: 15px;
     text-align: center;
 }

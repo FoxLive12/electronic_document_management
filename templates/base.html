@@ -29,8 +29,13 @@
                     <ul class="menu">
                         {% if user.id %}
                         <li class="profile" id="profile">
-                            <a href="/profile">{{current_user.surname + " " + current_user.name[0] + ". " + current_user.patronymic[0] + "."}}</a>
+                            <a href="/profile">{{user.surname + " " + user.name[0] + ". " + user.patronymic[0] + "."}}</a>
                         </li>
+                        {% endif %}
+                        {% if user.type_user == 1 %}
+                            <li class="profile" id="profile">
+                                <a href="/login/registration">Добавить пользователя</a>
+                            </li>
                         {% endif %}
                         {% if user.id %}
                         <li class="profile" id="profile">

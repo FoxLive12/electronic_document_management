@@ -10,6 +10,13 @@
 
 {% block content %}
 <div class="content">
+    {% if user.type_user == 1 or user.type_user == 3 %}
+        <div class="block-btn">
+            <a href="#" class="action-bttn approve">Согласовать</a>
+            <a href="/reject?id={{ msg.id }}" class="action-bttn reject">Отклонить</a>
+            <a href="#" class="action-bttn delegate">Делегировать</a>
+        </div>
+    {% endif %}
     <div class="doc-view">
         <iframe src="../static/{{msg.file_url}}" frameborder="0" width="900px" height="800px"></iframe>
     </div>

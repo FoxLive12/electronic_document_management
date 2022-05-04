@@ -12,9 +12,9 @@
             <hr class="separator-msg">
             <div class="item">
                 {% for i, j in sender %}
-                    <a href="/message?name={{j.id}}">
+                    <a href="/incoming/message?name={{j.id}}">
                         <div class="message-body">
-                            <p class="item-message">{{ i }}</p>
+                            <p class="item-message" {% if j.status == "Отправлен на проверку" %} style="font-weight: 600;" {% endif %}>{{ i }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">
@@ -26,9 +26,9 @@
             <hr class="separator-msg">
             <div class="item">
                 {% for i in msg %}
-                    <a href="/message?name={{i.id}}">
+                    <a href="/incoming/message?name={{i.id}}">
                         <div class="message-body">
-                            <p class="item-message">{{ i.file_name }}</p>
+                            <p class="item-message" {% if i.status == "Отправлен на проверку" %} style="font-weight: 600;" {% endif %}>{{ i.file_name }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">
@@ -40,9 +40,9 @@
             <hr class="separator-msg">
             <div class="item">
                 {% for i in msg %}
-                    <a href="/message?name={{i.id}}">
+                    <a href="/incoming/message?name={{i.id}}">
                         <div class="message-body">
-                            <p class="item-message">{{ i.status }}</p>
+                            <p class="item-message" {% if i.status == "Отправлен на проверку" %} style="font-weight: 600;" {% endif %}>{{ i.status }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">
@@ -54,9 +54,9 @@
             <hr class="separator-msg">
             <div class="item">
                 {% for i in msg %}
-                    <a href="/message?name={{i.id}}">
+                    <a href="/incoming/message?name={{i.id}}">
                         <div class="message-body">
-                            <p class="item-message">{{ i.date }}</p>
+                            <p class="item-message" {% if i.status == "Отправлен на проверку" %} style="font-weight: 600;" {% endif %}>{{ i.date }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">

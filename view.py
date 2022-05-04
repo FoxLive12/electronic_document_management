@@ -18,6 +18,7 @@ def load_user(user_id):
 @app.route('/')
 @login_required
 def index():
+    print(current_user.type_user)
     return render_template('base.html', user=current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -42,35 +43,39 @@ def login():
     return render_template('login.html', user=current_user)
 
 @app.route('/login/registration', methods=['GET', 'POST'])
+@login_required
 def registation():
-    user_type = Type.query.all()
-    if request.method == 'POST':
-        surname = request.form['surname']
-        name = request.form['name']
-        patronymic = request.form['patronymic']
-        email = request.form['email']
-        passw = request.form['password']
-        re_passw = request.form['re-password']
-        user_role_id = int(Type.query.filter_by(title=str(request.form.get('user_type'))).first().id)
-        if surname and name and patronymic and email and passw and re_passw:
-            user = Users.query.filter_by(email=email).first()
-            if user:
-                flash('Эта электронная почта уже используется')
-                return redirect('/login/registration')
-            else:
-                if passw == re_passw:
-                    user = Users(surname=surname, name=name, patronymic=patronymic, email=email, passw=generate_password_hash(passw), type_user=user_role_id)
-                    db.session.add(user)
-                    db.session.commit()
-                    os.mkdir(f'static/projects/{email}')
-                    return redirect('/login')
-                else:
-                    flash('Пароли не совпадают')
+    if current_user.type_user == 1:
+        user_type = Type.query.all()
+        if request.method == 'POST':
+            surname = request.form['surname']
+            name = request.form['name']
+            patronymic = request.form['patronymic']
+            email = request.form['email']
+            passw = request.form['password']
+            re_passw = request.form['re-password']
+            user_role_id = int(Type.query.filter_by(title=str(request.form.get('user_type'))).first().id)
+            if surname and name and patronymic and email and passw and re_passw:
+                user = Users.query.filter_by(email=email).first()
+                if user:
+                    flash('Эта электронная почта уже используется')
                     return redirect('/login/registration')
-        else:
-            flash('Вы заполнили не все поля')
-            return redirect('/login/registration')
-    return render_template('registration.html', user=current_user, type = user_type)
+                else:
+                    if passw == re_passw:
+                        user = Users(surname=surname, name=name, patronymic=patronymic, email=email, passw=generate_password_hash(passw), type_user=user_role_id)
+                        db.session.add(user)
+                        db.session.commit()
+                        os.mkdir(f'static/projects/{email}')
+                        return redirect('/login')
+                    else:
+                        flash('Пароли не совпадают')
+                        return redirect('/login/registration')
+            else:
+                flash('Вы заполнили не все поля')
+                return redirect('/login/registration')
+        return render_template('registration.html', user=current_user, type = user_type)
+    else:
+        return redirect("/")
 
 @app.route("/logout")
 @login_required
@@ -131,7 +136,7 @@ def add_doc():
         if f and allowed_file(f.filename, ALLOWED_EXTENSIONS):
             f_name = secure_filename(str(rename_file(f.filename, datetime.datetime.now())))
             f.save(os.path.join(f'static/projects/{current_user.email}/', f_name))
-            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/' + f_name, date=str(datetime.datetime.now()), status='Send', sender=current_user.id, recipient=user)
+            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/' + f_name, date=str(datetime.datetime.now()), status='Отправлен на проверку', sender=current_user.id, recipient=user)
             db.session.add(message)
             db.session.commit()
             return redirect('/')
@@ -156,9 +161,24 @@ def ingoing():
         sender_list.append(user.surname + " " + user.name[0] + ". " + user.patronymic[0] + ".")
     return render_template('incoming.html', user=current_user, msg = list(reversed(msg)), sender = zip(list(reversed(sender_list)), list(reversed(msg))))
 
-@app.route('/message')
+@app.route('/incoming/message')
 @login_required
 def message():
     id = request.args['name']
     msg = Message.query.filter_by(id = id).first()
+    if msg.status == 'Отправлен на проверку':
+        msg.status = "Получен"
+        db.session.add(msg)
+        db.session.commit()
     return render_template('message.html', user=current_user, msg=msg)
+
+
+@app.route('/reject')
+@login_required
+def reject():
+    id = request.args['id']
+    msg = Message.query.filter_by(id = id).first()
+    msg.status = "Отклонён"
+    db.session.add(msg)
+    db.session.commit()
+    return redirect(f"/incoming/message?name={id}")
