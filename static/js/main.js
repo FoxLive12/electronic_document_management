@@ -1,4 +1,4 @@
-var check = false
+var check = false;
 document.querySelector('#ic-view-pass').addEventListener('click', e => {   
     var psw = document.getElementById('passw-input')
     const image = document.getElementById('ic-view-pass')
@@ -14,7 +14,7 @@ document.querySelector('#ic-view-pass').addEventListener('click', e => {
     }
 });
 
-var re_check = false
+var re_check = false;
 document.querySelector('#ic-view-re-pass').addEventListener('click', e => {   
     var psw = document.getElementById('re-passw-input')
     const image = document.getElementById('ic-view-re-pass')

@@ -1,5 +1,9 @@
+.bttns {
+    display: flex;
+}
+
 .action-bttn {
-    width: 150px;
+    min-width: 150px;
     display: inline-block;
     color: #fff;
     text-align: center;
@@ -7,6 +11,11 @@
     text-decoration: none;
     border-radius: 5px;
     text-transform: uppercase;
+    margin-right: 5px;
+}
+
+.right {
+    margin-left: auto;
 }
 
 .action-bttn:hover {
@@ -25,7 +34,12 @@
     background-color: #8C959D;
 }
 
+.right-btn{
+    background-color: #32c9ae;
+}
+
 .doc-view {
+    display: none;
     margin-top: 15px;
     text-align: center;
 }

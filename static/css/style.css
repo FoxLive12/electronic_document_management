@@ -82,6 +82,7 @@ ul, li{
 }
 
 .container {
+    min-height: 100%;
     display: flex;
     margin: 10px;
 }

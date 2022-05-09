@@ -14,7 +14,7 @@
                 {% for i, j in sender %}
                     <a href="/incoming/message?name={{j.id}}">
                         <div class="message-body">
-                            <p class="item-message" {% if j.status == "Отправлен на проверку" %} style="font-weight: 600;" {% endif %}>{{ i }}</p>
+                            <p class="item-message" {% if j.status.id == 1 or j.status.id == 4 %} style="font-weight: 600;" {% endif %}>{{ i }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">
@@ -28,7 +28,7 @@
                 {% for i in msg %}
                     <a href="/incoming/message?name={{i.id}}">
                         <div class="message-body">
-                            <p class="item-message" {% if i.status == "Отправлен на проверку" %} style="font-weight: 600;" {% endif %}>{{ i.file_name }}</p>
+                            <p class="item-message" {% if i.status.id == 1 or i.status.id == 4 %} style="font-weight: 600;" {% endif %}>{{ i.file_name }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">
@@ -42,7 +42,7 @@
                 {% for i in msg %}
                     <a href="/incoming/message?name={{i.id}}">
                         <div class="message-body">
-                            <p class="item-message" {% if i.status == "Отправлен на проверку" %} style="font-weight: 600;" {% endif %}>{{ i.status }}</p>
+                            <p class="item-message" {% if i.status.id == 1 or i.status.id == 4 %} style="font-weight: 600;" {% endif %}>{{ i.status.title }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">
@@ -56,7 +56,7 @@
                 {% for i in msg %}
                     <a href="/incoming/message?name={{i.id}}">
                         <div class="message-body">
-                            <p class="item-message" {% if i.status == "Отправлен на проверку" %} style="font-weight: 600;" {% endif %}>{{ i.date }}</p>
+                            <p class="item-message" {% if i.status.id == 1 or i.status.id == 4 %} style="font-weight: 600;" {% endif %}>{{ i.date }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">

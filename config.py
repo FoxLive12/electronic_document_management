@@ -1,4 +1,5 @@
 class Configuration:
+    DEBUG = False
     SECRET_KEY = 'secret key'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = 'smtp.gmail.com'

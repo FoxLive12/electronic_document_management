@@ -12,7 +12,7 @@
             <hr class="separator-msg">
             <div class="item">
                 {% for j in msg %}
-                    <a href="/message?name={{j.id}}">
+                    <a href="/outgoing/message?name={{j.id}}">
                         <div class="message-body">
                             <p class="item-message">{{ user.surname + " " + user.name[0] + ". " + user.patronymic[0] + "." }} (Вы)</p>
                         </div>
@@ -26,7 +26,7 @@
             <hr class="separator-msg">
             <div class="item">
                 {% for i in msg %}
-                    <a href="/message?name={{i.id}}">
+                    <a href="/outgoing/message?name={{i.id}}">
                         <div class="message-body">
                             <p class="item-message">{{ i.file_name }}</p>
                         </div>
@@ -40,9 +40,9 @@
             <hr class="separator-msg">
             <div class="item">
                 {% for i in msg %}
-                    <a href="/message?name={{i.id}}">
+                    <a href="/outgoing/message?name={{i.id}}">
                         <div class="message-body">
-                            <p class="item-message">{{ i.status }}</p>
+                            <p class="item-message">{{ i.status.title }}</p>
                         </div>
                     </a>
                     <hr class="separator-msg">
@@ -54,7 +54,7 @@
             <hr class="separator-msg">
             <div class="item">
                 {% for i in msg %}
-                    <a href="/message?name={{i.id}}">
+                    <a href="/outgoing/message?name={{i.id}}">
                         <div class="message-body">
                             <p class="item-message">{{ i.date }}</p>
                         </div>

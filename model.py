@@ -33,7 +33,7 @@ class Message(db.Model):
     file_name = db.Column(db.String(200), nullable=False)
     file_url = db.Column(db.String(200), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
-    status= db.Column(db.String(200), nullable=False)
+    status_mess = db.Column(db.Integer, db.ForeignKey('status.id'))
     sender = db.Column(db.Integer, db.ForeignKey('users.id'))
     recipient =  db.Column(db.Integer, nullable=False)
 
@@ -42,3 +42,14 @@ class Message(db.Model):
 
     def __repr__(self):
         return '<Message {}>'.format(self.file_name)
+
+class Status(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False, unique=True)
+    message_id = db.relationship("Message", backref='status', uselist=False)
+
+    def __init__(self, *args, **kwargs):
+        super(Status, self).__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Status {}>'.format(self.title)

@@ -10,15 +10,23 @@
 
 {% block content %}
 <div class="content">
-    {% if user.type_user == 1 or user.type_user == 3 %}
+    <div class="bttns">
+        {% if user.type_user == 1 or user.type_user == 3 %}
         <div class="block-btn">
             <a href="#" class="action-bttn approve">Согласовать</a>
             <a href="/reject?id={{ msg.id }}" class="action-bttn reject">Отклонить</a>
-            <a href="#" class="action-bttn delegate">Делегировать</a>
+            <!--<a href="#" class="action-bttn delegate">Делегировать</a>-->
         </div>
-    {% endif %}
-    <div class="doc-view">
+        {% endif %}
+        <div class="block-btn right">
+            <a href="#" class="action-bttn right-btn" id="action-view" onClick='this.innerHTML=="Посмотреть документ" ? this.innerHTML="Скрыть документ" : this.innerHTML="Посмотреть документ"'>Посмотреть документ</a>
+            <a href="/download?url={{msg.file_url}}" class="action-bttn right-btn" id="download-view">Скачать</a>
+        </div>
+    </div>
+    <div class="doc-view" id="doc-view">
         <iframe src="../static/{{msg.file_url}}" frameborder="0" width="900px" height="800px"></iframe>
     </div>
 </div>
+
+<script type="text/javascript" src="../static/js/message.js"></script>
 {% endblock %}

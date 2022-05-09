@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{msg.file_name}}</title>
+{% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="../static/css/message.css">
+<link rel="stylesheet" href="../static/css/upload.css">
+<link rel="stylesheet" href="../static/css/popup.css">
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="bttns">
+        <a href="#" class="action-bttn right-btn" id="action-view" onClick='this.innerHTML=="Посмотреть документ" ? this.innerHTML="Скрыть документ" : this.innerHTML="Посмотреть документ"'>Посмотреть документ</a>
+        <a href="/download?url={{msg.file_url}}" class="action-bttn right-btn" id="download-view">Скачать</a>
+        <a href="#popup" class="action-bttn right-btn">Изменить документ</a>
+    </div>
+    <div class="doc-view" id="doc-view">
+        <iframe src="../static/{{msg.file_url}}" frameborder="0" width="900px" height="800px"></iframe>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-body">
+            <div class="popup-content">
+                <a href="#" class="popup-close">x</a>
+                <div class="popup-title">
+                    <h4>Загрузите исправленный документ</h4>
+                </div>
+                <div class="popup-text">
+                    <form method="post" class="form-upload-file" enctype="multipart/form-data">
+                        <div class="input__wrapper">
+                            <input name="file" type="file" id="input__file" class="input input__file" multiple>
+                            <label for="input__file" class="input__file-button">
+                               <span class="input__file-icon-wrapper"><img class="input__file-icon" src="../static/image/icons/file-upload.svg" alt="Выбрать файл" width="35"></span> 
+                               <span class="input__file-button-text">Выберите файл</span>
+                            </label>
+                         </div>
+                        <input type="submit" class="submit" value="Переотправить">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../static/js/message.js"></script>
+{% endblock %}

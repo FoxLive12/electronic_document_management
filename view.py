@@ -1,5 +1,5 @@
 from app import app, login_manager, ALLOWED_EXTENSIONS
-from flask import render_template, request, flash
+from flask import render_template, request, flash, send_from_directory
 from flask_login import login_user, login_required, current_user, logout_user
 from model import *
 from werkzeug.utils import redirect, secure_filename
@@ -15,10 +15,15 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return Users.query.get(user_id)
 
+@app.after_request
+def add_header(response):
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'public, max-age=0'
+    return response
+
 @app.route('/')
 @login_required
 def index():
-    print(current_user.type_user)
     return render_template('base.html', user=current_user)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -136,7 +141,7 @@ def add_doc():
         if f and allowed_file(f.filename, ALLOWED_EXTENSIONS):
             f_name = secure_filename(str(rename_file(f.filename, datetime.datetime.now())))
             f.save(os.path.join(f'static/projects/{current_user.email}/', f_name))
-            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/' + f_name, date=str(datetime.datetime.now()), status='Отправлен на проверку', sender=current_user.id, recipient=user)
+            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/' + f_name, date=str(datetime.datetime.now()), status_mess = 1, sender=current_user.id, recipient=user)
             db.session.add(message)
             db.session.commit()
             return redirect('/')
@@ -150,6 +155,33 @@ def add_doc():
 def outgoing():
     msg = Message.query.filter_by(sender = current_user.id).all()
     return render_template('outgoing.html', user=current_user, msg = list(reversed(msg)))
+
+@app.route('/outgoing/message', methods=['GET', 'POST'])
+@login_required
+def you_message():
+    id = request.args['name']
+    msg = Message.query.filter_by(id = id).first()
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect('/outgoing/message')
+        f = request.files['file']
+        if f.filename == '':
+            flash('No selected file')
+            return redirect('/outgoing/message')
+        if f and allowed_file(f.filename, ALLOWED_EXTENSIONS):
+            f_name = msg.file_url.split('/')[-1]
+            f.save(os.path.join(f'static/{msg.file_url}'))
+            msg.file_name=f.filename 
+            msg.date=str(datetime.datetime.now())
+            msg.status_mess=4
+            db.session.add(msg)
+            db.session.commit()
+            return redirect('/outgoing')
+        else:
+            flash('Недопустимое расширение файла')
+            return redirect('/add-document')
+    return render_template('you_messages.html', user=current_user, msg = msg)
 
 @app.route('/incoming')
 @login_required
@@ -166,19 +198,24 @@ def ingoing():
 def message():
     id = request.args['name']
     msg = Message.query.filter_by(id = id).first()
-    if msg.status == 'Отправлен на проверку':
-        msg.status = "Получен"
+    if msg.status_mess == 1 or msg.status_mess == 4:
+        msg.status_mess = 2
         db.session.add(msg)
         db.session.commit()
     return render_template('message.html', user=current_user, msg=msg)
-
 
 @app.route('/reject')
 @login_required
 def reject():
     id = request.args['id']
     msg = Message.query.filter_by(id = id).first()
-    msg.status = "Отклонён"
+    msg.status_mess = 3
     db.session.add(msg)
     db.session.commit()
     return redirect(f"/incoming/message?name={id}")
+
+@app.route('/download/', methods=['GET', 'POST'])
+@login_required
+def download():
+    url = request.args['url']
+    return send_from_directory(app.static_folder, url, as_attachment=True)
