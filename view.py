@@ -166,9 +166,10 @@ def you_message():
             flash('No file part')
             return redirect('/outgoing/message')
         f = request.files['file']
-        if f.filename == '':
-            flash('No selected file')
-            return redirect('/outgoing/message')
+        text_comm = request.form['comment']
+        if f.filename == '' or text_comm == '':
+            flash('Не выбран файл/Не заполнен комментарий')
+            return redirect(f'/outgoing/message?name={id}')
         if f and allowed_file(f.filename, ALLOWED_EXTENSIONS):
             f_name = msg.file_url.split('/')[-1]
             f.save(os.path.join(f'static/{msg.file_url}'))
@@ -176,6 +177,9 @@ def you_message():
             msg.date=str(datetime.datetime.now())
             msg.status_mess=4
             db.session.add(msg)
+            db.session.commit()
+            comment = Comment(title="Изменено", text = text_comm, date = str(datetime.datetime.now()), message_id = msg.id)
+            db.session.add(comment)
             db.session.commit()
             return redirect('/outgoing')
         else:
@@ -208,7 +212,7 @@ def message():
         db.session.add(comment)
         db.session.commit()
         return redirect(f"/reject?id={msg.id}")
-    return render_template('message.html', user=current_user, msg=msg)
+    return render_template('message.html', user=current_user, msg=msg, comment = list(reversed(msg.message)))
 
 @app.route('/reject')
 @login_required

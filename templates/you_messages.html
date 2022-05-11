@@ -19,7 +19,7 @@
     </div>
     <div class="content-message">
         <div class="doc-view" id="doc-view">
-            <iframe src="../static/{{msg.file_url}}" frameborder="0" width="900px" height="800px"></iframe>
+            <iframe src="../static/{{msg.file_url}}" class="document" frameborder="0" width="900px" height="800px"></iframe>
         </div>
         <div class="comment-container">
             <h3 class="head-title">История комментариев</h3>
@@ -43,6 +43,13 @@
     <div id="popup" class="popup">
         <div class="popup-body">
             <div class="popup-content">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="flash">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
                 <a href="#" class="popup-close">x</a>
                 <div class="popup-title">
                     <h4>Загрузите исправленный документ</h4>
@@ -55,7 +62,11 @@
                                <span class="input__file-icon-wrapper"><img class="input__file-icon" src="../static/image/icons/file-upload.svg" alt="Выбрать файл" width="35"></span> 
                                <span class="input__file-button-text">Выберите файл</span>
                             </label>
-                         </div>
+                        </div>
+                        <div class="popup-title">
+                            <h4>Добавьте коментарий</h4>
+                        </div>
+                        <textarea id="comment" class="comment" name="comment" rows="4" cols="50" placeholder="Текст коментария"></textarea><br>
                         <input type="submit" class="submit" value="Переотправить">
                     </form>
                 </div>
