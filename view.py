@@ -198,15 +198,15 @@ def ingoing():
 def message():
     id = request.args['name']
     msg = Message.query.filter_by(id = id).first()
+    if msg.status_mess == 1 or msg.status_mess == 4:
+            msg.status_mess = 2
+            db.session.add(msg)
+            db.session.commit()
     if request.method == 'POST':
         text_comm = request.form['comment']
         comment = Comment(title="Отклонён", text = text_comm, date = str(datetime.datetime.now()), message_id = msg.id)
         db.session.add(comment)
         db.session.commit()
-        if msg.status_mess == 1 or msg.status_mess == 4:
-            msg.status_mess = 2
-            db.session.add(msg)
-            db.session.commit()
         return redirect(f"/reject?id={msg.id}")
     return render_template('message.html', user=current_user, msg=msg)
 
