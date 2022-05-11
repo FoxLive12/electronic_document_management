@@ -36,6 +36,7 @@ class Message(db.Model):
     status_mess = db.Column(db.Integer, db.ForeignKey('status.id'))
     sender = db.Column(db.Integer, db.ForeignKey('users.id'))
     recipient =  db.Column(db.Integer, nullable=False)
+    message = db.relationship("Comment")
 
     def __init__(self, *args, **kwargs):
         super(Message, self).__init__(*args, **kwargs)
@@ -53,3 +54,16 @@ class Status(db.Model):
 
     def __repr__(self):
         return '<Status {}>'.format(self.title)
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    text = db.Column(db.String(400), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    message_id = db.Column(db.Integer, db.ForeignKey('message.id'))
+
+    def __init__(self, *args, **kwargs):
+        super(Comment, self).__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Comment {}>'.format(self.title)

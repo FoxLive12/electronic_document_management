@@ -17,10 +17,29 @@
         <a href="/download?url={{msg.file_url}}" class="action-bttn right-btn" id="download-view">Скачать</a>
         <a href="#popup" class="action-bttn right-btn">Изменить документ</a>
     </div>
-    <div class="doc-view" id="doc-view">
-        <iframe src="../static/{{msg.file_url}}" frameborder="0" width="900px" height="800px"></iframe>
+    <div class="content-message">
+        <div class="doc-view" id="doc-view">
+            <iframe src="../static/{{msg.file_url}}" frameborder="0" width="900px" height="800px"></iframe>
+        </div>
+        <div class="comment-container">
+            <h3 class="head-title">История комментариев</h3>
+            {% for i in comment %}
+            <div class="comment" style="border: 1px solid {% if i.title == "Отклонён" %}rgba(252, 0, 0, 0.514){% endif %}{% if i.title == "Ожидает подписи" %}rgba(25, 202, 34, 0.514){% endif %};">
+                <div class="block-title">
+                    <div class="status">
+                        Статус: {{i.title}} 
+                    </div>
+                    <div class="date">
+                        Время: {{i.date}}
+                    </div>
+                </div>
+                <div class="comm-body">
+                    Сообщение: {{i.text}}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-
     <div id="popup" class="popup">
         <div class="popup-body">
             <div class="popup-content">

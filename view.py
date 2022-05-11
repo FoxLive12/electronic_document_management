@@ -181,7 +181,7 @@ def you_message():
         else:
             flash('Недопустимое расширение файла')
             return redirect('/add-document')
-    return render_template('you_messages.html', user=current_user, msg = msg)
+    return render_template('you_messages.html', user=current_user, msg = msg, comment = list(reversed(msg.message)))
 
 @app.route('/incoming')
 @login_required
@@ -193,15 +193,21 @@ def ingoing():
         sender_list.append(user.surname + " " + user.name[0] + ". " + user.patronymic[0] + ".")
     return render_template('incoming.html', user=current_user, msg = list(reversed(msg)), sender = zip(list(reversed(sender_list)), list(reversed(msg))))
 
-@app.route('/incoming/message')
+@app.route('/incoming/message', methods=['GET', 'POST'])
 @login_required
 def message():
     id = request.args['name']
     msg = Message.query.filter_by(id = id).first()
-    if msg.status_mess == 1 or msg.status_mess == 4:
-        msg.status_mess = 2
-        db.session.add(msg)
+    if request.method == 'POST':
+        text_comm = request.form['comment']
+        comment = Comment(title="Отклонён", text = text_comm, date = str(datetime.datetime.now()), message_id = msg.id)
+        db.session.add(comment)
         db.session.commit()
+        if msg.status_mess == 1 or msg.status_mess == 4:
+            msg.status_mess = 2
+            db.session.add(msg)
+            db.session.commit()
+        return redirect(f"/reject?id={msg.id}")
     return render_template('message.html', user=current_user, msg=msg)
 
 @app.route('/reject')
@@ -212,7 +218,20 @@ def reject():
     msg.status_mess = 3
     db.session.add(msg)
     db.session.commit()
-    return redirect(f"/incoming/message?name={id}")
+    return redirect(f"/incoming")
+
+@app.route('/approve')
+@login_required
+def approve():
+    id = request.args['id']
+    msg = Message.query.filter_by(id = id).first()
+    msg.status_mess = 5
+    db.session.add(msg)
+    db.session.commit()
+    comment = Comment(title="Ожидает подписи", text = "Ожидает подписи", date = str(datetime.datetime.now()), message_id = msg.id)
+    db.session.add(comment)
+    db.session.commit()
+    return redirect(f"/incoming")
 
 @app.route('/download/', methods=['GET', 'POST'])
 @login_required

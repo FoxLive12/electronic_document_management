@@ -20,12 +20,7 @@
             <div class="nav">
                 <div class="nav-content">
                     <a href="/" class="logo-link"><img src="../static/image/logo.svg" class="logo"></a>
-                    {% if user.id %}
-                        <form class="search" method="POST">
-                            <input type="text" class="search-query" placeholder="Поиск по всем документам">
-                            <img src="../static/image/icons/ic_search_magnifier.svg" class="ic-search">
-                        </form>
-                    {% endif %}
+                    
                     <ul class="menu">
                         {% if user.id %}
                         <li class="profile" id="profile">

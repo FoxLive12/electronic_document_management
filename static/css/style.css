@@ -48,7 +48,6 @@ ul, li{
 .search {
     display: flex;
     align-items: center;
-    margin-left: 300px;
     border: 2px solid #d6d6d6;
     border-radius: 4px;
 }
@@ -82,17 +81,16 @@ ul, li{
 }
 
 .container {
-    min-height: 100%;
     display: flex;
     margin: 10px;
 }
 
 .sidenav {
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 300px;
-    height: 100%;
     background-color: #32c9ae;
 }
 
@@ -170,4 +168,8 @@ ul, li{
 
 .submit:hover {
     background: #9ea8b0;
+}
+
+.content {
+    height: 100vh;
 }
