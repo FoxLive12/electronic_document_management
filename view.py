@@ -8,7 +8,7 @@ from func import send_email, allowed_file, rename_file
 from config import Configuration
 import os
 import datetime
-from models.adminModel import AdminView
+from models.adminModel import AdminView, RedirectView
 
 login_manager.login_view = 'login'
 
@@ -18,6 +18,7 @@ admin.add_view(AdminView(Status, db.session))
 admin.add_view(AdminView(Doc_type, db.session))
 admin.add_view(AdminView(Message, db.session))
 admin.add_view(AdminView(Comment, db.session))
+admin.add_view(RedirectView(name='На главную'))
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -160,11 +161,17 @@ def add_doc():
             return redirect('/add-document')
     return render_template('add_doc.html', user=current_user, recipient = users, type = doctypes)
 
-@app.route('/outgoing')
+@app.route('/outgoing', methods=['GET', 'POST'])
 @login_required
 def outgoing():
     msg = Message.query.filter_by(sender = current_user.id).all()
-    return render_template('outgoing.html', user=current_user, msg = list(reversed(msg)))
+    status = Status.query.all()
+    docType = Doc_type.query.all()
+    if request.method == 'POST':
+        status_id = request.form['status']
+        docType_id = request.form['doc-type']
+        msg = Message.query.filter_by(sender = current_user.id, status_mess=status_id, doctype = docType_id).all()
+    return render_template('outgoing.html', user=current_user, msg = list(reversed(msg)), status = status, docType = docType)
 
 @app.route('/outgoing/message', methods=['GET', 'POST'])
 @login_required
@@ -197,15 +204,21 @@ def you_message():
             return redirect('/add-document')
     return render_template('you_messages.html', user=current_user, msg = msg, comment = list(reversed(msg.message)))
 
-@app.route('/incoming')
+@app.route('/incoming', methods=['GET', 'POST'])
 @login_required
 def ingoing():
     msg = Message.query.filter_by(recipient = current_user.id).all()
     sender_list = []
+    status = Status.query.all()
+    docType = Doc_type.query.all()
+    if request.method == 'POST':
+        status_id = request.form['status']
+        docType_id = request.form['doc-type']
+        msg = Message.query.filter_by(recipient = current_user.id, status_mess=status_id, doctype = docType_id).all()
     for i in msg:
         user = Users.query.filter_by(id=i.sender).first()
         sender_list.append(user.surname + " " + user.name[0] + ". " + user.patronymic[0] + ".")
-    return render_template('incoming.html', user=current_user, msg = list(reversed(msg)), sender = zip(list(reversed(sender_list)), list(reversed(msg))))
+    return render_template('incoming.html', user=current_user, msg = list(reversed(msg)), sender = zip(list(reversed(sender_list)), list(reversed(msg))), status = status, docType = docType)
 
 @app.route('/incoming/message', methods=['GET', 'POST'])
 @login_required
@@ -231,6 +244,19 @@ def reject():
     msg = Message.query.filter_by(id = id).first()
     msg.status_mess = 3
     db.session.add(msg)
+    db.session.commit()
+    return redirect(f"/incoming")
+
+@app.route('/sign')
+@login_required
+def sign():
+    id = request.args['id']
+    msg = Message.query.filter_by(id = id).first()
+    msg.status_mess = 6
+    db.session.add(msg)
+    db.session.commit()
+    comment = Comment(title="Ожидает подписи", text = "Подписан", date = str(datetime.datetime.now()), message_id = msg.id)
+    db.session.add(comment)
     db.session.commit()
     return redirect(f"/incoming")
 

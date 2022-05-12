@@ -79,3 +79,70 @@
 .document {
     margin-top: 10px;
 }
+
+.filter-bttn {
+    min-width: 120px;
+    display: inline-block;
+    background-color: #32c9ae;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+
+.filter-body {
+    display: none;
+    width: 400px;
+    margin-left: 10px;
+    border: 1px solid #000;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.incoming-body {
+    margin-top: 10px;
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+}
+
+.filter-list {
+    width: 250px;
+    height: 35px;
+    margin-left: auto;
+    border: 2px solid #969696;
+}
+
+.filter-list:focus {
+    outline: 0px;
+}
+
+.filter-submit {
+    margin-top: 25px;
+    width: 250px;
+    height: 35px;
+    cursor: pointer;
+    border: none;
+    background-color: #8C959D;
+}
+
+.filter-submit:hover {
+    background: #9ea8b0;
+}
+
+.list {
+    margin-top: 10px;
+}
+
+.reset-bttn {
+    min-width: 120px;
+    background-color: #da5252;
+    color: #fff;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+}

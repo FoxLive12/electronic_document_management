@@ -1,4 +1,5 @@
 var viewDoc = false;
+
 document.querySelector('#action-view').addEventListener('click', e => {
     var areaView = document.getElementById('doc-view');
     if (viewDoc == true){

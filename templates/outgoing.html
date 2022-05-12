@@ -4,8 +4,37 @@
 <title>Исходящие</title>
 {% endblock %}
 
+{% block link %}
+<link rel="stylesheet" href="../static/css/message.css">
+{% endblock %}
+
 {% block content %}
 <div class="content">
+    <div class="sort-block">
+        <a href="#" class="filter-bttn" id="filter-bttn">Фильтры</a>
+        <div class="filter-body" id="filter-body">
+            <form method="post">
+                <div class="filter-item">
+                    <p>Статус: </p>
+                    <select name="status" class="filter-list">
+                        {% for item in status %}
+                            <option value="{{item.id}}">{{ item.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-item list">
+                    <p>Тип: </p>
+                    <select name="doc-type" class="filter-list">
+                        {% for item in docType %}
+                            <option value="{{item.id}}">{{ item.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="submit" class="filter-submit" value="Применить">
+                <a href="/outgoing" class="reset-bttn">Сбросить</a>
+            </form>
+        </div>
+    </div>
     <div class="incoming-body">
         <div class="column">
             <p class="table-title">Отправитель</p>
@@ -79,4 +108,5 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="../static/js/filter.js"></script>
 {% endblock %}

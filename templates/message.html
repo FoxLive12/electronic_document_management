@@ -14,9 +14,14 @@
     <div class="bttns">
         {% if user.type_user == 1 or user.type_user == 3 %}
         <div class="block-btn">
-            <a href="/approve?id={{ msg.id }}" class="action-bttn approve">Согласовать</a>
-            <a href="#popup" class="action-bttn reject">Отклонить</a>
-            <!--<a href="#" class="action-bttn delegate">Делегировать</a>-->
+            {% if msg.status_mess == 5 %}
+            <a href="/sign?id={{ msg.id }}" class="action-bttn approve"> Подписать</a>
+            {% else %}
+                {% if msg.status_mess != 6 %}
+                <a href="/approve?id={{ msg.id }}" class="action-bttn approve">Согласовать</a>
+                <a href="#popup" class="action-bttn reject">Отклонить</a>
+                {% endif %}
+            {% endif %}
         </div>
         {% endif %}
         <div class="block-btn right">
