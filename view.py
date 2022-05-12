@@ -1,15 +1,23 @@
-from app import app, login_manager, ALLOWED_EXTENSIONS
+from app import app, login_manager, ALLOWED_EXTENSIONS, admin
 from flask import render_template, request, flash, send_from_directory
 from flask_login import login_user, login_required, current_user, logout_user
-from model import *
+from models.model import *
 from werkzeug.utils import redirect, secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from func import send_email, allowed_file, rename_file
 from config import Configuration
 import os
 import datetime
+from models.adminModel import AdminView
 
 login_manager.login_view = 'login'
+
+admin.add_view(AdminView(Users, db.session))
+admin.add_view(AdminView(Type, db.session))
+admin.add_view(AdminView(Status, db.session))
+admin.add_view(AdminView(Doc_type, db.session))
+admin.add_view(AdminView(Message, db.session))
+admin.add_view(AdminView(Comment, db.session))
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -71,7 +79,7 @@ def registation():
                         db.session.add(user)
                         db.session.commit()
                         os.mkdir(f'static/projects/{email}')
-                        return redirect('/login')
+                        return redirect('/')
                     else:
                         flash('Пароли не совпадают')
                         return redirect('/login/registration')
@@ -129,8 +137,10 @@ def profile():
 @login_required
 def add_doc():
     users = Users.query.filter(Users.id != current_user.id).all()
+    doctypes = Doc_type.query.all()
     if request.method == 'POST':
         user = request.form['user_type']
+        docType = request.form['doc_type']
         if 'file' not in request.files:
             flash('No file part')
             return redirect('/add-document')
@@ -141,14 +151,14 @@ def add_doc():
         if f and allowed_file(f.filename, ALLOWED_EXTENSIONS):
             f_name = secure_filename(str(rename_file(f.filename, datetime.datetime.now())))
             f.save(os.path.join(f'static/projects/{current_user.email}/', f_name))
-            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/' + f_name, date=str(datetime.datetime.now()), status_mess = 1, sender=current_user.id, recipient=user)
+            message = Message(file_name=f.filename, file_url=f'projects/{current_user.email}/' + f_name, date=str(datetime.datetime.now()), status_mess = 1, doctype = docType, sender=current_user.id, recipient=user)
             db.session.add(message)
             db.session.commit()
             return redirect('/')
         else:
             flash('Недопустимое расширение файла')
             return redirect('/add-document')
-    return render_template('add_doc.html', user=current_user, recipient = users)
+    return render_template('add_doc.html', user=current_user, recipient = users, type = doctypes)
 
 @app.route('/outgoing')
 @login_required

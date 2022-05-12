@@ -28,22 +28,6 @@ class Type(db.Model):
     def __repr__(self):
         return '<Type {}>'.format(self.title)
 
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    file_name = db.Column(db.String(200), nullable=False)
-    file_url = db.Column(db.String(200), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
-    status_mess = db.Column(db.Integer, db.ForeignKey('status.id'))
-    sender = db.Column(db.Integer, db.ForeignKey('users.id'))
-    recipient =  db.Column(db.Integer, nullable=False)
-    message = db.relationship("Comment")
-
-    def __init__(self, *args, **kwargs):
-        super(Message, self).__init__(*args, **kwargs)
-
-    def __repr__(self):
-        return '<Message {}>'.format(self.file_name)
-
 class Status(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False, unique=True)
@@ -54,6 +38,34 @@ class Status(db.Model):
 
     def __repr__(self):
         return '<Status {}>'.format(self.title)
+
+class Doc_type(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False, unique=True)
+    message_id = db.relationship("Message", backref='doc_type', uselist=False)
+
+    def __init__(self, *args, **kwargs):
+        super(Doc_type, self).__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Doc_type {}>'.format(self.title)
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    file_name = db.Column(db.String(200), nullable=False)
+    file_url = db.Column(db.String(200), nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
+    status_mess = db.Column(db.Integer, db.ForeignKey('status.id'))
+    doctype = db.Column(db.Integer, db.ForeignKey('doc_type.id'))
+    sender = db.Column(db.Integer, db.ForeignKey('users.id'))
+    recipient =  db.Column(db.Integer, nullable=False)
+    message = db.relationship("Comment")
+
+    def __init__(self, *args, **kwargs):
+        super(Message, self).__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Message {}>'.format(self.file_name)
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -1,0 +1,8 @@
+.admin-menu {
+    display: flex;
+    margin-left: 60px;
+}
+
+.admin-menu li {
+    margin-right: 40px;
+}

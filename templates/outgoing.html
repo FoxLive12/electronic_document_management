@@ -36,6 +36,20 @@
             </div>
         </div>
         <div class="column">
+            <p class="table-title">Тип</p>
+            <hr class="separator-msg">
+            <div class="item">
+                {% for i in msg %}
+                    <a href="/outgoing/message?name={{i.id}}">
+                        <div class="message-body">
+                            <p class="item-message">{{ i.doc_type.title }}</p>
+                        </div>
+                    </a>
+                    <hr class="separator-msg">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="column">
             <p class="table-title">Статус</p>
             <hr class="separator-msg">
             <div class="item">
