@@ -21,18 +21,18 @@
             <div class="nav">
                 <div class="nav-content">
                     <a href="/" class="logo-link"><img src="../static/image/logo.svg" class="logo"></a>
-                    
                     <ul class="menu">
                         {% if user.id %}
                         <li class="profile" id="profile">
                             <div class="dropdown">
-                                <button class="dropbtn"> {{user.surname + " " + user.name[0] + ". " + user.patronymic[0] + "."}}
+                                <button class="dropbtn"> Меню
                                     <i class="down"></i>
                                 </button>
                                 <div class="dropdown-content">
                                     {% if user.type_user == 1 %}
                                     <a href="/admin">Админ панель</a>
                                     {% endif %}
+                                    <a href="/login/registration">Добавить пользователя</a>
                                     <a href="/logout">Выйти</a>
                                 </div>
                             </div>
@@ -73,15 +73,17 @@
                                 <p>Исходящие</p>
                             </div>
                         </div></a>
+                        <hr class="separator">
                 </div>
             </div>
         </div>
         {% endblock %}
         {% block content %}
             <div class="content">
-                asddsf            
+                asddsf       
             </div>
         {% endblock %}
     </div>
+<script type="text/javascript" src="../static/js/main.js"></script>
 </body>
 </html>

@@ -13,28 +13,29 @@
 
 {% block content %}
 <div class="content">
-    <h2 class="auth">Регистрация</h3>
+    <div class="login-content">
+    <p class="auth">Регистрация</p>
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="flash">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+            {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash"><p class="flash-title">{{ message }}</p></div>
+                    {% endfor %}
+            {% endif %}
+        {% endwith %}
     <form class="form-login" method="post" >
-        <div>
+        <div class="box-login-input">
             <input type="text" placeholder="Фамилия" class="login-input" name="surname">
         </div>
-        <div>
+        <div class="box-login-input">
             <input type="text" placeholder="Имя" class="login-input" name="name">
         </div>
-        <div>
+        <div class="box-login-input">
             <input type="text" placeholder="Отчество" class="login-input" name="patronymic">
         </div>
-        <div>
+        <div class="box-login-input">
             <input type="email" placeholder="E-mail" class="login-input" name="email">
         </div>
-        <div>
+        <div class="box-login-input">
             <select name="user_type" class="user_type">
                 {% for item in type %}
                     <option value="{{item.title}}">{{item.title}}</option>
@@ -51,6 +52,7 @@
         </div>
         <input type="submit" value="Добавить" class="submit">
     </form>
+    </div>
 </div>
 <script type="text/javascript" src="../static/js/main.js"></script>
 {% endblock %}

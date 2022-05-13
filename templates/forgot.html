@@ -9,19 +9,21 @@
 
 {% block content %}
 <div class="content">
-    <h2 class="auth">Восстановить пароль</h3>
+    <div class="login-content">
+    <p class="auth">Восстановить пароль</p>
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-                {% for message in messages %}
-                    <div class="flash">{{ message }}</div>
-                {% endfor %}
-        {% endif %}
-    {% endwith %}
+            {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash"><p class="flash-title">{{ message }}</p></div>
+                    {% endfor %}
+            {% endif %}
+        {% endwith %}
     <form class="form-login" method="post">
-        <div>
+        <div class="box-login-input">
             <input type="email" placeholder="E-mail" class="login-input" name="email">
         </div>
         <input type="submit" value="Подтвердить" class="submit">
     </form>
+    </div>
 </div>
 {% endblock %}
