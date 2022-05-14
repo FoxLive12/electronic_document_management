@@ -1,3 +1,5 @@
+from operator import and_
+from queue import Empty
 from app import app, login_manager, ALLOWED_EXTENSIONS, admin
 from flask import render_template, request, flash, send_from_directory
 from flask_login import login_user, login_required, current_user, logout_user
@@ -170,8 +172,15 @@ def outgoing():
     if request.method == 'POST':
         status_id = request.form['status']
         docType_id = request.form['doc-type']
-        msg = Message.query.filter_by(sender = current_user.id, status_mess=status_id, doctype = docType_id).all()
-    return render_template('outgoing.html', user=current_user, msg = list(reversed(msg)), status = status, docType = docType)
+        dateFrom = request.form['date-from']
+        dateBefore = request.form['date-before']
+        msg = Message.query.filter(Message.sender == current_user.id).\
+            filter(Message.status_mess == status_id if status_id else Message.status_mess).\
+            filter(Message.doctype == docType_id if docType_id else Message.doctype).\
+            filter(Message.date >= dateFrom if dateFrom else Message.date).\
+            filter(Message.date <= dateBefore if dateBefore else Message.date).\
+            all()
+    return render_template('outgoing.html', user=current_user, msg = list(reversed(msg)), status = status, docType = docType, date=datetime.datetime.now())
 
 @app.route('/outgoing/message', methods=['GET', 'POST'])
 @login_required
@@ -214,7 +223,14 @@ def ingoing():
     if request.method == 'POST':
         status_id = request.form['status']
         docType_id = request.form['doc-type']
-        msg = Message.query.filter_by(recipient = current_user.id, status_mess=status_id, doctype = docType_id).all()
+        dateFrom = request.form['date-from']
+        dateBefore = request.form['date-before']
+        msg = Message.query.filter(Message.recipient == current_user.id).\
+            filter(Message.status_mess == status_id if status_id else Message.status_mess).\
+            filter(Message.doctype == docType_id if docType_id else Message.doctype).\
+            filter(Message.date >= dateFrom if dateFrom else Message.date).\
+            filter(Message.date <= dateBefore if dateBefore else Message.date).\
+            all()
     for i in msg:
         user = Users.query.filter_by(id=i.sender).first()
         sender_list.append(user.surname + " " + user.name[0] + ". " + user.patronymic[0] + ".")

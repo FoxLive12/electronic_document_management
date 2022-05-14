@@ -1,5 +1,6 @@
 class Configuration:
     DEBUG = True
+    CSRF_ENABLED = True
     SECRET_KEY = 'secret key'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MAIL_SERVER = 'smtp.gmail.com'

@@ -17,6 +17,7 @@
                 <div class="filter-item">
                     <p>Статус: </p>
                     <select name="status" class="filter-list">
+                        <option value="">--Выберите пункт--</option>
                         {% for item in status %}
                             <option value="{{item.id}}">{{ item.title }}</option>
                         {% endfor %}
@@ -25,10 +26,19 @@
                 <div class="filter-item list">
                     <p>Тип: </p>
                     <select name="doc-type" class="filter-list">
+                        <option value="">--Выберите пункт--</option>
                         {% for item in docType %}
                             <option value="{{item.id}}">{{ item.title }}</option>
                         {% endfor %}
                     </select>
+                </div>
+                <div class="filter-item list">
+                    <p>Дата (от): </p>
+                    <input type="date" class="filter-list" name="date-from">
+                </div>
+                <div class="filter-item list">
+                    <p>Дата (до): </p>
+                    <input type="date" class="filter-list" name="date-before">
                 </div>
                 <input type="submit" class="filter-submit" value="Применить">
                 <a href="/incoming" class="reset-bttn">Сбросить</a>
