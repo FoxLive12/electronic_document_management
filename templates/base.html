@@ -50,30 +50,35 @@
     <div class="container">
         {% block sidenav %}
         <div id="side-navigation" class="side-navigation">
-            <div id="sidenav" class="sidenav">
-                <div class="create-bttn">
-                    <a href="/add-document" class="create-project">Создать документ</a>
-                </div>
-                <div class="side-menu">
-                        <hr class="separator">
-                        <a href="#"><div class="side-menu-item">
-                            <div class="side-menu-link">
-                                <p>Мои документы</p>
-                            </div>
-                        </div></a>
-                        <hr class="separator">
-                        <a href="/incoming"><div class="side-menu-item">
-                            <div class="side-menu-link">
-                               <p>Входящие</p>
-                            </div>
-                        </div></a>
-                        <hr class="separator">
-                        <a href="/outgoing"><div class="side-menu-item">
-                            <div class="side-menu-link">
-                                <p>Исходящие</p>
-                            </div>
-                        </div></a>
-                        <hr class="separator">
+            <div>
+                <img src="../static/image/icons/burger.svg" class="burger" id="burger"> 
+            </div>
+            <div class="hide-side"  id="hide-side">
+                <div id="sidenav" class="sidenav">
+                    <div class="create-bttn">
+                        <a href="/add-document" class="create-project">Создать документ</a>
+                    </div>
+                    <div class="side-menu">
+                            <hr class="separator">
+                            <a href="#"><div class="side-menu-item">
+                                <div class="side-menu-link">
+                                    <p>Мои документы</p>
+                                </div>
+                            </div></a>
+                            <hr class="separator">
+                            <a href="/incoming"><div class="side-menu-item">
+                                <div class="side-menu-link">
+                                <p>Входящие</p>
+                                </div>
+                            </div></a>
+                            <hr class="separator">
+                            <a href="/outgoing"><div class="side-menu-item">
+                                <div class="side-menu-link">
+                                    <p>Исходящие</p>
+                                </div>
+                            </div></a>
+                            <hr class="separator">
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,6 +89,6 @@
             </div>
         {% endblock %}
     </div>
-<script type="text/javascript" src="../static/js/main.js"></script>
+<script type="text/javascript" src="../static/js/sideNav.js"></script>
 </body>
 </html>

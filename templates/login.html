@@ -13,6 +13,7 @@
 
 {% block content %}
 <div class="content">
+    <div class="flex-login">
     <div class="login-content">
     <p class="auth">Авторизация</p>
         {% with messages = get_flashed_messages() %}
@@ -39,6 +40,7 @@
            <a href="/forgot">Забыли пароль</a>
         </div>
     </form>
+    </div>
     </div>
 </div>
 <script type="text/javascript" src="../static/js/main.js"></script>

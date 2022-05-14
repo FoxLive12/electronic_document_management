@@ -4,8 +4,15 @@
   text-align: center;
 }
 
+@media (max-width: 450px){
+  .form-upload-file {
+    width: 200px;
+  }
+}
+@media (min-width: 1000px){
 .form-upload-file {
-    margin-left: 20px;
+  width: 600px;
+}
 }
 
 .select-groupe {
@@ -13,8 +20,7 @@
 }
 
 .select-groupe div{
-  display: flex;
-  align-items: center;
+
   margin-right: 10px;
 }
 

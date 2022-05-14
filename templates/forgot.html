@@ -9,6 +9,7 @@
 
 {% block content %}
 <div class="content">
+    <div class="flex-login">
     <div class="login-content">
     <p class="auth">Восстановить пароль</p>
     {% with messages = get_flashed_messages() %}
@@ -24,6 +25,7 @@
         </div>
         <input type="submit" value="Подтвердить" class="submit">
     </form>
+    </div>
     </div>
 </div>
 {% endblock %}
