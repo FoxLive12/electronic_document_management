@@ -36,7 +36,7 @@
         <div class="comment-container">
             <h3 class="head-title">История комментариев</h3>
             {% for i in comment %}
-            <div class="comment" style="border: 1px solid {% if i.title == "Отклонён" %}rgba(252, 0, 0, 0.514){% endif %}{% if i.title == "Ожидает подписи" %}rgba(25, 202, 34, 0.514){% endif %};">
+            <div class="comment" style="border: 1px solid {% if i.title == "Отклонён" %}rgba(252, 0, 0, 0.514){% endif %}{% if i.title == "Ожидает подписи" or i.title == "Подпись" %}rgba(25, 202, 34, 0.514){% endif %};">
                 <div class="block-title">
                     <div class="status">
                         Статус: {{i.title}} 

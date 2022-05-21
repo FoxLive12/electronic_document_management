@@ -1,5 +1,3 @@
-from operator import and_
-from queue import Empty
 from app import app, login_manager, ALLOWED_EXTENSIONS, admin
 from flask import render_template, request, flash, send_from_directory
 from flask_login import login_user, login_required, current_user, logout_user
@@ -9,8 +7,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from func import send_email, allowed_file, rename_file
 from config import Configuration
 import os
+from datetime import datetime as dt
 import datetime
 from models.adminModel import AdminView, RedirectView
+from PIL import Image, ImageDraw, ImageOps, ImageFont
+import img2pdf
+import fitz
 
 login_manager.login_view = 'login'
 
@@ -82,6 +84,7 @@ def registation():
                         db.session.add(user)
                         db.session.commit()
                         os.mkdir(f'static/projects/{email}')
+                        os.mkdir(f'static/projects/{email}/watermark')
                         return redirect('/')
                     else:
                         flash('Пароли не совпадают')
@@ -271,9 +274,22 @@ def sign():
     msg.status_mess = 6
     db.session.add(msg)
     db.session.commit()
-    comment = Comment(title="Ожидает подписи", text = "Подписан", date = str(datetime.datetime.now()), message_id = msg.id)
+    comment = Comment(title="Подпись", text = "Подписан", date = str(datetime.datetime.now()), message_id = msg.id)
     db.session.add(comment)
     db.session.commit()
+
+    input_file = f"static/{msg.file_url}"
+    output_file = f"static/projects/{msg.type.email}/watermark_{(msg.file_url).split('/')[-1]}"
+    barcode_file = f"{msg.type.watermark_url}"
+    image_rectangle = fitz.Rect(10, 170, 250, 1200)
+    file_handle = fitz.open(input_file)
+    first_page = file_handle[0]
+    first_page.insertImage(image_rectangle, filename=barcode_file)
+    file_handle.save(output_file)
+    msg.watermark_file_url = f"projects/{msg.type.email}/watermark_{(msg.file_url).split('/')[-1]}"
+    db.session.add(msg)
+    db.session.commit()
+    
     return redirect(f"/incoming")
 
 @app.route('/approve')
@@ -294,3 +310,39 @@ def approve():
 def download():
     url = request.args['url']
     return send_from_directory(app.static_folder, url, as_attachment=True)
+
+@app.route('/watermark', methods = ['GET', 'POST'])
+def watermark():
+    users = Users.query.all()
+    if request.method == 'POST':
+        user = request.form['user_type']
+        user_item = Users.query.filter_by(id=user).first()
+        if user_item.watermark_id == None:
+            valid_from = dt.now().strftime("%d.%m.%Y")
+            valid_until = str(dt.now().day) + '.0' + str(dt.now().month) + '.' + str(int(dt.now().year) + 1)
+            watermark = Image.new('RGBA', (500, 230), color=('#00000000'))
+            logo = Image.open('static/image/watermark/kipu.png').convert("RGBA")
+            logo = logo.resize((90,120))
+            watermark.paste(logo, (15,15), logo)
+            watermark = ImageOps.expand(watermark, border=2, fill='#5E5E5E')
+            font = ImageFont.truetype('static/fonts/Roboto.ttf', size=20)
+            small_font = ImageFont.truetype('static/fonts/Roboto.ttf', size=16)
+            text_title = ImageDraw.Draw(watermark)
+            text_title.text((200,60), 'ДОКУМЕНТ ПОДПИСАН', font=font, fill='#5E5E5E')
+            text_title.text((185,85), 'ЭЛЕКТРОННОЙ ПОДПИСЬЮ', font=font, fill='#5E5E5E')
+            text_title.text((20,150), f'Владелец: {user_item.surname} {user_item.name} {user_item.patronymic}', font=small_font, fill='#5E5E5E')
+            text_title.text((20,170), f'Действительна: с {valid_from} до {valid_until}', font=small_font, fill='#5E5E5E')
+            text_title.text((20,190), 'Источник: www.electronicworkflows.ru', font=small_font, fill='#5E5E5E')
+            watermark_png_url = f'static/projects/{user_item.email}/watermark/watermark.png'
+            watermark.save(watermark_png_url, format="png")
+            watermatr_db = Watermark(file_name='watermark.pdf', valid_from=dt.now(), valid_until = datetime.date(dt.now().year+1, dt.now().month, dt.now().day))
+            db.session.add(watermatr_db)
+            db.session.commit()
+            user_item.watermark_id = watermatr_db.id
+            user_item.watermark_url = watermark_png_url
+            db.session.add(user_item)
+            db.session.commit()
+        else:
+            flash('У этого пользователя уже есть действующая подпись')
+
+    return render_template('watermark.html', user=current_user, user_list = users)

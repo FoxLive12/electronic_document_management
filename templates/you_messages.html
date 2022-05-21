@@ -15,7 +15,8 @@
     <div class="bttns">
         <a href="#" class="action-bttn right-btn" id="action-view" onClick='this.innerHTML=="Посмотреть документ" ? this.innerHTML="Скрыть документ" : this.innerHTML="Посмотреть документ"'>Посмотреть документ</a>
         <a href="/download?url={{msg.file_url}}" class="action-bttn right-btn" id="download-view">Скачать</a>
-        <a href="#popup" class="action-bttn right-btn">Изменить документ</a>
+        {% if msg.status_mess == 6 %}<a href="/download?url={{msg.watermark_file_url}}" class="action-bttn right-btn" id="download-view">Скачать (подписанный)</a>{% endif %}
+        {% if msg.status_mess != 6 %}<a href="#popup" class="action-bttn right-btn">Изменить документ</a>{% endif %}
     </div>
     <div class="content-message">
         <div class="doc-view" id="doc-view">
@@ -24,7 +25,7 @@
         <div class="comment-container">
             <h3 class="head-title">История комментариев</h3>
             {% for i in comment %}
-            <div class="comment" style="border: 1px solid {% if i.title == "Отклонён" %}rgba(252, 0, 0, 0.514){% endif %}{% if i.title == "Ожидает подписи" %}rgba(25, 202, 34, 0.514){% endif %};">
+            <div class="comment" style="border: 1px solid {% if i.title == "Отклонён" %}rgba(252, 0, 0, 0.514){% endif %}{% if i.title == "Ожидает подписи" or i.title == "Подпись" %}rgba(25, 202, 34, 0.514){% endif %};">
                 <div class="block-title">
                     <div class="status">
                         Статус: {{i.title}} 

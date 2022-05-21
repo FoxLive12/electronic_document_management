@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+<title>Выпуск подписи</title>
+{% endblock %}
+
+{% block link %}
+<link rel="stylesheet" href="../static/css/upload.css">
+<link rel="stylesheet" href="../static/css/login.css">
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="upload-file">
+        <p class="caption">Новая электронная подпись</p>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash">{{ message }}</div>
+                    {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="/watermark" method="post" class="form-upload-file">
+          <div class="select-groupe">
+            <div class="select-item">
+              <p class="lable">Кому:</p>
+              <select name="user_type" class="user_type">
+                {% for item in user_list %}
+                    <option value="{{item.id}}">{{ item.surname }} {{ item.name[0] }}. {{ item.patronymic[0] }}.</option>
+                {% endfor %}
+              </select>
+            </div>
+            <input type="submit" class="submit" value="Выпустить">
+        </form>
+    </div>
+</div>
+{% endblock %}

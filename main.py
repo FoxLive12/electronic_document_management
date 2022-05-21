@@ -1,4 +1,3 @@
-from distutils.log import debug
 from app import app
 import view
 
