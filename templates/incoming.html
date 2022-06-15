@@ -95,7 +95,22 @@
                 {% for i in msg %}
                     <a href="/incoming/message?name={{i.id}}">
                         <div class="message-body">
-                            <p class="item-message" {% if i.status.id == 1 or i.status.id == 4 %} style="font-weight: 600;" {% endif %}>{{ i.status.title }}</p>
+                            <div class="circle-status" style="
+                                {% if i.status.id == 1 or i.status.id == 4 %}
+                                    background-color: #7D7D7D;
+                                {% endif %}
+                                {% if i.status.id == 2 %}
+                                    background-color: #ECBA1C;
+                                {% endif %}
+                                {% if i.status.id == 3 %}
+                                    background-color: #F53636;
+                                {% endif %}
+                                {% if i.status.id == 5 %}
+                                    background-color: #008F32;
+                                {% endif %}"></div>
+                            <p class="item-message" {% if i.status.id == 6 %} style="color: #AFAFAF;" {% endif %}>
+                                {{ i.status.title }}
+                            </p>
                         </div>
                     </a>
                     <hr class="separator-msg">

@@ -11,8 +11,8 @@ from datetime import datetime as dt
 import datetime
 from models.adminModel import AdminView, RedirectView
 from PIL import Image, ImageDraw, ImageOps, ImageFont
-import img2pdf
 import fitz
+
 
 login_manager.login_view = 'login'
 
@@ -23,6 +23,7 @@ admin.add_view(AdminView(Doc_type, db.session))
 admin.add_view(AdminView(Message, db.session))
 admin.add_view(AdminView(Comment, db.session))
 admin.add_view(RedirectView(name='На главную'))
+
 
 @login_manager.user_loader
 def load_user(user_id):
